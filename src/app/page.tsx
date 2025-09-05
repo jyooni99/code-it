@@ -1,88 +1,133 @@
-import Image from "next/image";
-
-export default function Home() {
-  const blogPosts = [
-    {
-      title: "첫 번째 블로그 포스트",
-      description: "블로그 포스트 설명입니다.",
-      date: "2024-03-20",
-      imageUrl:
-        "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      title: "두 번째 블로그 포스트",
-      description: "블로그 포스트 설명입니다.",
-      date: "2024-03-21",
-      imageUrl:
-        "https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      title: "세 번째 블로그 포스트",
-      description: "블로그 포스트 설명입니다.",
-      date: "2024-03-22",
-      imageUrl:
-        "https://images.unsplash.com/photo-1455894127589-22f75500213a?q=80&w=1987&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      title: "네 번째 블로그 포스트",
-      description: "블로그 포스트 설명입니다.",
-      date: "2024-03-23",
-      imageUrl:
-        "https://images.unsplash.com/photo-1589652717521-10c0d092dea9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      title: "다섯 번째 블로그 포스트",
-      description: "블로그 포스트 설명입니다.",
-      date: "2024-03-24",
-      imageUrl:
-        "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      title: "여섯 번째 블로그 포스트",
-      description: "블로그 포스트 설명입니다.",
-      date: "2024-03-25",
-      imageUrl:
-        "https://images.unsplash.com/photo-1522410818928-5522dacd5066?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-  ];
-
+const LoginForm = () => {
   return (
-    <main className="mx-auto px-4 py-8 dark:bg-gray-900">
-      <h1 className="mb-8 text-center text-4xl font-bold dark:text-white">
-        나의 블로그
-      </h1>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {blogPosts.map((post, index) => (
-          <div
-            key={index}
-            className="overflow-hidden rounded-lg bg-white shadow-lg transition-shadow duration-300 hover:shadow-xl dark:bg-gray-800"
+    <div className="flex h-screen items-center justify-center bg-gray-100 dark:bg-gray-900">
+      <form className="mx-auto max-w-md">
+        <div className="relative z-0 mb-5 w-full">
+          <input
+            type="email"
+            name="floating_email"
+            id="floating_email"
+            className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none dark:border-gray-600 dark:text-white dark:focus:border-blue-500"
+            placeholder=" "
+            required
+          />
+          <label
+            htmlFor="floating_email"
+            className="absolute top-3 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 dark:peer-focus:text-blue-500"
           >
-            <Image
-              width={500}
-              height={500}
-              src={post.imageUrl}
-              alt={post.title}
-              className="h-48 w-full object-cover"
+            이메일 주소
+          </label>
+        </div>
+        <div className="group relative z-0 mb-5 w-full">
+          <input
+            type="password"
+            name="floating_password"
+            id="floating_password"
+            className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none dark:border-gray-600 dark:text-white dark:focus:border-blue-500"
+            placeholder=" "
+            required
+          />
+          <label
+            htmlFor="floating_password"
+            className="absolute top-3 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 dark:peer-focus:text-blue-500"
+          >
+            비밀번호
+          </label>
+        </div>
+        <div className="group relative z-0 mb-5 w-full">
+          <input
+            type="password"
+            name="repeat_password"
+            id="floating_repeat_password"
+            className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none dark:border-gray-600 dark:text-white dark:focus:border-blue-500"
+            placeholder=" "
+            required
+          />
+          <label
+            htmlFor="floating_repeat_password"
+            className="absolute top-3 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 dark:peer-focus:text-blue-500"
+          >
+            비밀번호 확인
+          </label>
+        </div>
+        <div className="grid md:grid-cols-2 md:gap-6">
+          <div className="group relative z-0 mb-5 w-full">
+            <input
+              type="text"
+              name="floating_first_name"
+              id="floating_first_name"
+              className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none dark:border-gray-600 dark:text-white dark:focus:border-blue-500"
+              placeholder=" "
+              required
             />
-            <div className="p-6">
-              <h2 className="mb-2 text-xl font-semibold dark:text-white">
-                {post.title}
-              </h2>
-              <p className="mb-4 text-gray-600 dark:text-gray-300">
-                {post.description}
-              </p>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-500 dark:text-gray-400">
-                  {post.date}
-                </span>
-                <button className="text-blue-500 hover:text-blue-700 dark:text-blue-400">
-                  자세히 보기
-                </button>
-              </div>
-            </div>
+            <label
+              htmlFor="floating_first_name"
+              className="absolute top-3 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 dark:peer-focus:text-blue-500"
+            >
+              이름
+            </label>
           </div>
-        ))}
-      </div>
-    </main>
+          <div className="group relative z-0 mb-5 w-full">
+            <input
+              type="text"
+              name="floating_last_name"
+              id="floating_last_name"
+              className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none dark:border-gray-600 dark:text-white dark:focus:border-blue-500"
+              placeholder=" "
+              required
+            />
+            <label
+              htmlFor="floating_last_name"
+              className="absolute top-3 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 dark:peer-focus:text-blue-500"
+            >
+              성
+            </label>
+          </div>
+        </div>
+        <div className="grid md:grid-cols-2 md:gap-6">
+          <div className="group relative z-0 mb-5 w-full">
+            <input
+              type="tel"
+              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+              name="floating_phone"
+              id="floating_phone"
+              className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none dark:border-gray-600 dark:text-white dark:focus:border-blue-500"
+              placeholder=" "
+              required
+            />
+            <label
+              htmlFor="floating_phone"
+              className="absolute top-3 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 dark:peer-focus:text-blue-500"
+            >
+              전화번호
+            </label>
+          </div>
+          <div className="group relative z-0 mb-5 w-full">
+            <input
+              type="text"
+              name="floating_company"
+              id="floating_company"
+              className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none dark:border-gray-600 dark:text-white dark:focus:border-blue-500"
+              placeholder=" "
+              required
+            />
+            <label
+              htmlFor="floating_company"
+              className="absolute top-3 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 dark:peer-focus:text-blue-500"
+            >
+              회사
+            </label>
+          </div>
+        </div>
+        <button
+          type="submit"
+          className="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none sm:w-auto dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          가입하기
+        </button>
+      </form>
+    </div>
   );
-}
+};
+
+export default LoginForm;
