@@ -1,11 +1,24 @@
+"use client";
+
+import { useState } from "react";
+
 export default function Home() {
+  const [isActive, setIsActive] = useState<boolean>(false);
+
   return (
-    <div className="card-container">
-      <div className="card">영화 카드1</div>
-      <div className="card">영화 카드2</div>
-      <div className="card">영화 카드3</div>
-      <div className="card">영화 카드4</div>
-      <div className="card">영화 카드5</div>
+    <div className="container">
+      <button
+        className="btn"
+        onMouseEnter={() => setIsActive(true)}
+        onMouseLeave={() => setIsActive(false)}
+      >
+        아이콘 버튼
+      </button>
+      <div className={`menu-container ${isActive ? "active" : ""}`}>
+        <div className="menu-item">메뉴1</div>
+        <div className="menu-item">메뉴2</div>
+        <div className="menu-item">메뉴3</div>
+      </div>
     </div>
   );
 }
