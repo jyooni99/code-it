@@ -1,49 +1,79 @@
-@import "tailwindcss";
+/* li reset */
 
-@custom-variant dark (&:where([dark-theme=dark], [dark-theme=dark] *));
+li {
+  display: inline-block;
+  list-style: none;
+}
 
-/* css */
-/* css */
-
-.container {
-  height: 100vh;
+.slideWrap {
   display: flex;
-  gap: 10px;
-  justify-content: center;
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 200px;
+  overflow: hidden;
+}
+
+.slideWrap .imgSlide {
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding-left: 0;
 }
 
-.btn {
-  padding: 12px;
-  border-radius: 8px;
-  border: none;
-  background-color: #000;
-  color: #fff;
-  cursor: pointer;
-  transition: all 0.3s;
+.slideWrap .imgSlide li {
+  width: 200px;
+  height: 200px;
+  line-height: 200px;
+  margin-right: 5vw;
+  background-color: #ccc;
+  text-align: center;
 }
 
-.btn:hover {
-  background-color: #888;
-  color: #000;
+.imgSlide.original {
+  animation: slide01 30s linear infinite;
 }
 
-.menu-container {
-  border-radius: 8px;
-  width: 100px;
-  height: 100px;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.3s;
+.imgSlide.clone {
+  animation: slide02 30s linear infinite;
 }
 
-.active {
-  opacity: 1;
-  transform: translateY(0);
+/* `slide01` 애니메이션
+    - 처음엔 정위치
+    - 50%까지는 왼쪽으로 완전히 이동하여 안보이게
+    - 50% 직후(50.01%)에 가장 오른쪽으로 이동하여 clone 이미지 오른쪽에 붙이기
+    - 100%에서는 다시 정위치 
+*/
+
+@keyframes slide01 {
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(-100%);
+  }
+
+  50.01% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
 
-.menu-item {
-  border: 1px solid black;
-  width: 100px;
-  height: 20px;
+/* 2. `slide02` 애니메이션
+    - 처음엔 정위치
+    - 100%까지는 왼쪽으로 끝까지 이동 
+*/
+
+@keyframes slide02 {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-200%);
+  }
 }
