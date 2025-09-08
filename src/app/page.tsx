@@ -1,9 +1,11 @@
 export default function Home() {
   return (
-    <div className="flex h-screen items-center justify-center">
-      <span className="bg-linear-to-l from-[#15c064] to-[#00d1ff] bg-clip-text px-1 text-9xl leading-[1.1] font-bold text-transparent">
-        Codify
-      </span>
+    <div className="card-container">
+      <div className="card">영화 카드1</div>
+      <div className="card">영화 카드2</div>
+      <div className="card">영화 카드3</div>
+      <div className="card">영화 카드4</div>
+      <div className="card">영화 카드5</div>
     </div>
   );
 }
