@@ -1,20 +1,7 @@
-const SLIDES = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10"];
-
 export default function Home() {
   return (
-    <div>
-      <div className="slideWrap">
-        <ul className="imgSlide original">
-          {SLIDES.map((slide, index) => (
-            <li key={`original-${index}`}>{slide}</li>
-          ))}
-        </ul>
-        <ul className="imgSlide clone">
-          {SLIDES.map((slide, index) => (
-            <li key={`clone-${index}`}>{slide}</li>
-          ))}
-        </ul>
-      </div>
+    <div className="animate-show flex h-screen items-center justify-center gap-2">
+      <div className="h-96 w-72 rounded-lg border shadow-md"></div>
     </div>
   );
 }
