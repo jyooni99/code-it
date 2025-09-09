@@ -1,16 +1,43 @@
 "use client";
 
-import { motion } from "motion/react"; // use client 추가해야 함
-// import * as motion from "motion/react-client"; -> 서버 컴포넌트에서 animation 사용 가능
+import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          console.log("화면에 해당 요소가 감지되었습니다.");
+        } else {
+          setIsVisible(false);
+          console.log("화면에 해당 요소가 사라졌습니다.");
+        }
+      });
+    });
+
+    const currentRef = ref.current;
+
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, []);
+
   return (
-    <motion.div
-      initial={{ translateX: -100, opacity: 0 }} // 초기 값
-      animate={{ translateX: 0, opacity: 1 }} // 애니메이션
-      transition={{ duration: 0.8 }} // 애니메이션 지속 시간
-    >
-      왼쪽에서 슬라이드 인!
-    </motion.div>
+    <div className="flex h-[400dvh] items-center justify-center">
+      <div
+        ref={ref}
+        className={`h-48 w-48 bg-amber-300 transition-all duration-700 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
+      ></div>
+    </div>
   );
 }
