@@ -1,52 +1,33 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useInView } from "react-intersection-observer";
+import { motion } from "motion/react";
+import { useState } from "react";
 
 export default function Home() {
-  const { ref, inView } = useInView({ threshold: 1 });
+  const [isOn, setIsOn] = useState<boolean>(false);
 
-  const [items, setItems] = useState([...Array(10)].map((_, i) => i + 1));
-  const [page, setPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const loadMoreItems = async () => {
-    setIsLoading(true);
-
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    const nextPage = page + 1;
-    const newItems = [...Array(10)].map((_, i) => items.length + i + 1);
-
-    setItems((prevItems) => [...prevItems, ...newItems]);
-    setPage(nextPage);
-    setIsLoading(false);
+  const toggleSwitch = () => {
+    setIsOn(!isOn);
   };
 
-  useEffect(() => {
-    if (inView) {
-      loadMoreItems();
-    }
-  }, [inView]);
-
   return (
-    <div className="container mx-auto">
-      <div className="flex flex-col gap-4">
-        {items.map((item) => (
-          <div className="h-48 border border-gray-500" key={item}>
-            {item}
-          </div>
-        ))}
-      </div>
-      {/* 해당 div가 뷰포트에 다 보일 때 더 로드 */}
-      <div className="py-4 text-center" ref={ref}>
-        <div className="flex items-center justify-center space-x-2">
-          <div className="h-4 w-4 animate-pulse rounded-full bg-blue-500"></div>
-          <div className="h-4 w-4 animate-pulse rounded-full bg-blue-500"></div>
-          <div className="h-4 w-4 animate-pulse rounded-full bg-blue-500"></div>
-          <span className="text-gray-500">로딩 중...</span>
-        </div>
-      </div>
+    <div className="flex h-screen items-center justify-center">
+      <button
+        className={`flex h-18 w-36 cursor-pointer rounded-full p-3 ${
+          isOn ? "justify-end bg-blue-500" : "justify-start bg-gray-300"
+        }`}
+        onClick={toggleSwitch}
+      >
+        <motion.div
+          className={`h-12 w-12 rounded-full bg-white`}
+          layout // layout이 부모 요소의 width를 계산하여 애니메이션 자동 구현
+          transition={{
+            type: "spring",
+            visualDuration: 0.2,
+            bounce: 0.2,
+          }}
+        />
+      </button>
     </div>
   );
 }
