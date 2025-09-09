@@ -1,33 +1,66 @@
 "use client";
 
-import { motion } from "motion/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence, easeInOut } from "motion/react";
 
-export default function Home() {
-  const [isOn, setIsOn] = useState<boolean>(false);
+export const WordChangeAnimation = ({
+  prefix,
+  suffix,
+  words,
+  interval = 2000,
+}: {
+  prefix: string;
+  suffix: string;
+  words: string[];
+  interval?: number;
+}) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const toggleSwitch = () => {
-    setIsOn(!isOn);
-  };
+  useEffect(() => {
+    const timer = setInterval(() => {
+      // currentIndex를 현재 단어 개수로 나눈 나머지를 구함
+      // 단어가 4개라면 0, 1, 2, 3, 0, 1, 2, 3, ...
+      setCurrentIndex((prev) => (prev + 1) % words.length);
+    }, interval);
+
+    return () => clearInterval(timer);
+  }, [words, interval]);
 
   return (
-    <div className="flex h-screen items-center justify-center">
-      <button
-        className={`flex h-18 w-36 cursor-pointer rounded-full p-3 ${
-          isOn ? "justify-end bg-blue-500" : "justify-start bg-gray-300"
-        }`}
-        onClick={toggleSwitch}
-      >
-        <motion.div
-          className={`h-12 w-12 rounded-full bg-white`}
-          layout // layout이 부모 요소의 width를 계산하여 애니메이션 자동 구현
-          transition={{
-            type: "spring",
-            visualDuration: 0.2,
-            bounce: 0.2,
-          }}
-        />
-      </button>
+    <div className="flex h-12 items-center overflow-hidden text-2xl">
+      <span>{prefix}</span>
+      <div className="relative mx-2 inline-block w-12 overflow-hidden">
+        <AnimatePresence mode="popLayout">
+          <motion.span
+            key={currentIndex}
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -50, opacity: 0 }}
+            transition={{ duration: 0.3, ease: easeInOut }}
+            className="inline-block font-bold text-blue-600"
+          >
+            {`${words[currentIndex]}`}
+          </motion.span>
+        </AnimatePresence>
+      </div>
+      <span>{suffix}</span>
+    </div>
+  );
+};
+
+// 사용 예시
+export default function WordChangeExample() {
+  // 단어 목록
+  const words = ["러닝", "게임", "볼링", "요가", "독서"];
+
+  return (
+    <div className="p-8">
+      <WordChangeAnimation
+        prefix="오늘은"
+        suffix="어떤가요?"
+        words={words}
+        interval={2000}
+      />
     </div>
   );
 }
