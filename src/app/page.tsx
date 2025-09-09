@@ -1,43 +1,42 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import * as React from "react";
+import { motion, useScroll, useTransform } from "motion/react";
 
-export default function Home() {
-  const [isVisible, setIsVisible] = useState<boolean>(false);
-  const ref = useRef<HTMLDivElement>(null);
+const PAGE_COUNT = 5;
 
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          console.log("화면에 해당 요소가 감지되었습니다.");
-        } else {
-          setIsVisible(false);
-          console.log("화면에 해당 요소가 사라졌습니다.");
-        }
-      });
-    });
-
-    const currentRef = ref.current;
-
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-    };
-  }, []);
+function ScrollLinked() {
+  const { scrollYProgress } = useScroll(); // useScroll: 현재 스크롤 위치 감지
+  const clipPath = useTransform(
+    scrollYProgress,
+    (scrollYProgress) => `circle(${scrollYProgress * 100}%)`, // 스크롤 위치 기반으로 원 크기 조절
+  );
 
   return (
-    <div className="flex h-[400dvh] items-center justify-center">
-      <div
-        ref={ref}
-        className={`h-48 w-48 bg-amber-300 transition-all duration-700 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
-      ></div>
+    <div className="h-full w-full bg-gray-900">
+      <div className="fixed inset-0">
+        <motion.div
+          className="absolute top-1/2 left-1/2 flex h-full w-full -translate-x-1/2 -translate-y-1/2 items-center justify-center bg-orange-500"
+          style={{ clipPath }}
+        >
+          <div className="text-center">
+            <h1 className="flex flex-col gap-4 text-8xl font-bold text-blue-600">
+              <span>
+                <span>Aha!</span>
+              </span>
+              <span>
+                <span>You found me!</span>
+              </span>
+            </h1>
+          </div>
+        </motion.div>
+      </div>
+
+      {new Array(PAGE_COUNT).fill(null).map((_, index) => (
+        <div className="h-screen w-screen" key={index} />
+      ))}
     </div>
   );
 }
+
+export default ScrollLinked;
