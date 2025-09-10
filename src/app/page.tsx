@@ -1,52 +1,65 @@
 "use client";
 
+import { deleteCookie, isCookieExists, setCookie } from "../lib/cookies";
 import { useEffect, useState } from "react";
-import { motion } from "motion/react";
 
-export const TypingEffect = ({
-  text,
-  typingSpeed = 150,
-}: {
-  text: string;
-  typingSpeed?: number;
-}) => {
-  // 현재 입력된 텍스트
-  const [displayText, setDisplayText] = useState("");
-  // 현재 입력된 텍스트의 인덱스
-  const [currentIndex, setCurrentIndex] = useState(0);
+export default function Home() {
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout | undefined;
+    const isModalHidden = isCookieExists("isModalHidden");
 
-    if (currentIndex < text.length) {
-      timer = setTimeout(() => {
-        setDisplayText((prev) => prev + text[currentIndex]);
-        setCurrentIndex((prev) => prev + 1);
-      }, typingSpeed);
+    if (!isModalHidden) {
+      setShowModal(true);
     }
+  }, []);
 
-    return () => clearTimeout(timer);
-  }, [currentIndex, text, typingSpeed]);
+  const handleModalCheckboxChange = () => {
+    // 3. 쿠키가 존재하면 쿠키를 삭제하세요.
+    if (isCookieExists("isModalHidden")) {
+      deleteCookie("isModalHidden");
+    } else {
+      const date = new Date();
+      date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
+      setCookie("isModalHidden", "true", { expires: date, path: "/" });
+    }
+  };
+
+  const handleClose = () => {
+    setShowModal(false);
+  };
 
   return (
-    <div className="font-mono text-2xl">
-      {/* 현재 입력된 텍스트 */}
-      {displayText}
-      {/* 깜빡거리는 타이핑 커서 */}
-      <motion.span
-        animate={{ opacity: [0, 1, 0] }}
-        transition={{ repeat: Infinity, duration: 0.8 }}
-        className="ml-1 inline-block h-5 w-2 bg-black"
-      />
-    </div>
-  );
-};
+    <div className="flex h-screen w-screen items-center justify-center">
+      메인 화면
+      {showModal && (
+        <div className="bg-opacity-50 fixed inset-0 flex items-center justify-center bg-black/50">
+          <div className="rounded-lg bg-white p-6 shadow-lg">
+            <h2 className="mb-4 text-xl font-bold">안내</h2>
+            <p className="mb-4">환영합니다! 이것은 모달창입니다.</p>
+            <div className="flex justify-end gap-2">
+              <label
+                htmlFor="modalCheckbox"
+                className="flex items-center gap-2"
+              >
+                <input
+                  type="checkbox"
+                  id="modalCheckbox"
+                  onChange={handleModalCheckboxChange}
+                />
+                오늘 하루 보지 않기
+              </label>
 
-// 사용 예시
-export default function TypingEffectExample() {
-  return (
-    <div className="p-8">
-      <TypingEffect text="오늘은 러닝 어떤가요?" typingSpeed={100} />
+              <button
+                onClick={handleClose}
+                className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+              >
+                닫기
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
