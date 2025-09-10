@@ -78,3 +78,18 @@ export function deleteCookie(name: string) {
     "max-age": 0,
   });
 }
+
+// 특정 쿠키의 값을 찾는 함수
+export function getCookieValue(name: string) {
+  const encodedName = encodeURIComponent(name);
+
+  const cookie = document.cookie
+    .split("; ")
+    .find((cookie) => cookie.startsWith(encodedName + "="));
+
+  if (cookie) {
+    return decodeURIComponent(cookie.split("=")[1]);
+  }
+
+  return undefined;
+}
