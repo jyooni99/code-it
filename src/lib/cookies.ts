@@ -60,3 +60,21 @@ setCookie("user", "kim", {
   secure: true,
   "max-age": 3600,
 });
+
+// 특정 키의 쿠키가 존재하는지 확인하는 함수
+export function isCookieExists(name: string): boolean {
+  const encodedName = encodeURIComponent(name);
+
+  return document.cookie
+    .split("; ")
+    .find((cookie) => cookie.startsWith(encodedName + "="))
+    ? true
+    : false;
+}
+
+// 특정 쿠키 제거하는 함수
+export function deleteCookie(name: string) {
+  setCookie(name, "", {
+    "max-age": 0,
+  });
+}
