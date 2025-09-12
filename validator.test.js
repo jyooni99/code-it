@@ -1,4 +1,4 @@
-const { validatePassword, validateEmail } = require("./validate");
+const { validatePassword, validateEmail } = require("./validator");
 
 describe("validate 모듈 테스트", () => {
   describe("validatePassword 테스트", () => {
