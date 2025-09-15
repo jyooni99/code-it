@@ -1,11 +1,56 @@
-function calculateDiscountedPrice(originalPrice, discountPercentage) {
-  if (originalPrice < 0 || discountPercentage < 0 || discountPercentage > 100) {
-    throw new Error(
-      "입력값이 유효하지 않습니다. 가격과 할인율은 0 이상이어야 하며, 할인율은 100 이하이어야 합니다."
-    );
-  }
-  const discount = originalPrice * (discountPercentage / 100);
-  return originalPrice - discount;
+function calculatePrice(price, membership = "normal", coupon = null) {
+  const priceAfterPriceDiscount = applyPriceDiscount(price);
+  const priceAfterMembershipDiscount = applyMembershipDiscount(
+    priceAfterPriceDiscount,
+    membership
+  );
+
+  const priceAfterCouponDiscount = applyCouponDiscount(
+    priceAfterMembershipDiscount,
+    coupon
+  );
+
+  const finalPrice = applyMinimumPriceLimit(priceAfterCouponDiscount, price);
+
+  return finalPrice;
 }
 
-module.exports = { calculateDiscountedPrice };
+function applyPriceDiscount(price) {
+  if (price >= 50000 && price < 100000) {
+    return price * 0.95;
+  } else if (price >= 100000 && price < 200000) {
+    return price * 0.9;
+  } else if (price >= 200000) {
+    return price * 0.8;
+  } else {
+    return price;
+  }
+}
+
+function applyMembershipDiscount(price, membership) {
+  if (membership === "normal") {
+    return price;
+  } else if (membership === "silver") {
+    return price * 0.98;
+  } else if (membership === "gold") {
+    return price * 0.95;
+  } else if (membership === "vip") {
+    return price * 0.9;
+  }
+}
+
+function applyCouponDiscount(price, coupon) {
+  if (!coupon) {
+    return price;
+  } else if (coupon.type === "fixed") {
+    return price - coupon.amount;
+  } else if (coupon.type === "percentage") {
+    return price * (1 - coupon.amount / 100);
+  }
+}
+
+function applyMinimumPriceLimit(discountPrice, originalPrice) {
+  return Math.max(discountPrice, originalPrice * 0.5);
+}
+
+module.exports = { calculatePrice };
