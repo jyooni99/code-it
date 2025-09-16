@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 type Post = {
   id: number;
@@ -13,12 +14,8 @@ export default function Home() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("http://localhost:4000/posts");
-      if (!response.ok) {
-        throw new Error("에러 발생");
-      }
-      const posts = await response.json();
-      setData(posts);
+      const response = await axios.get("http://localhost:4000/posts");
+      setData(response.data);
     };
     fetchData();
   }, []);
