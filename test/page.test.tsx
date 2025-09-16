@@ -1,52 +1,72 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import Home from "../app/page";
+import Home from "@/app/page";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { render, screen, waitFor } from "@testing-library/react";
 
-describe("CartPage 컴포넌트 테스트", () => {
-  test("로그인 하지 않은 상태에서 추가 버튼 클릭 시 경고하는 alert가 호출되어야 함", () => {
-    const mockAlert = jest.spyOn(window, "alert").mockImplementation(() => {});
-    render(<Home />);
-
-    const addButton = screen.getByRole("button", { name: "추가" });
-    fireEvent.click(addButton);
-
-    expect(mockAlert).toHaveBeenCalledWith("로그인하지 않으면 추가할 수 없습니다.");
-    mockAlert.mockRestore();
+// 테스트용 쿼리 클라이언트 생성
+const createTestQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        gcTime: Infinity,
+      },
+    },
   });
 
-  test("로그인 한 상태에서 추가 버튼 클릭 시 카운트가 증가해야 함", () => {
-    render(<Home />);
+const renderWithQueryClient = (component: React.ReactElement) => {
+  const testQueryClient = createTestQueryClient();
 
-    const loginButton = screen.getByRole("button", { name: "로그인" });
-    fireEvent.click(loginButton);
+  return render(
+    <QueryClientProvider client={testQueryClient}>{component}</QueryClientProvider>
+  );
+};
 
-    expect(screen.getByText("로그인됨: user@example.com")).toBeInTheDocument();
+describe("메인 페이지 테스트", () => {
+  describe("useQuery 테스트", () => {
+    test("로딩 상태가 올바르게 표시되는 지 확인", () => {
+      renderWithQueryClient(<Home />);
 
-    const addButton = screen.getByRole("button", { name: "추가" });
-    fireEvent.click(addButton);
+      expect(screen.getByText("Loading...")).toBeInTheDocument();
+    });
 
-    expect(screen.getByText("상품 개수: 1")).toBeInTheDocument();
-  });
+    test("데이터가 성공적으로 로드되고 표시되는 지 확인", async () => {
+      const mockData = [
+        {
+          id: 1,
+          title: "1번 데이터",
+          body: "1번 데이터 내용",
+        },
+        {
+          id: 2,
+          title: "2번 데이터",
+          body: "2번 데이터 내용",
+        },
+      ];
 
-  test("상품이 0개일 때 제거 버튼이 비활성화 되어야 함", () => {
-    render(<Home />);
+      global.fetch = jest.fn().mockResolvedValueOnce({
+        ok: true,
+        json: jest.fn().mockResolvedValue(mockData),
+      });
 
-    const removeButton = screen.getByRole("button", { name: "제거" });
-    expect(removeButton).toBeDisabled();
-  });
+      renderWithQueryClient(<Home />);
 
-  test("상품이 1개 이상일 때 제거 버튼이 활성화 되어야 함", () => {
-    render(<Home />);
+      await waitFor(() => {
+        const listitems = screen.getAllByRole("listitem");
+        expect(listitems).toHaveLength(mockData.length);
+      });
+    });
 
-    const loginButton = screen.getByRole("button", { name: "로그인" });
-    fireEvent.click(loginButton);
+    test("API 호출 실패 시 에러 상태가 올바르게 표시되는 지 확인", async () => {
+      global.fetch = jest.fn().mockResolvedValueOnce({ ok: false });
 
-    const addButton = screen.getByRole("button", { name: "추가" });
-    fireEvent.click(addButton);
-    fireEvent.click(addButton);
+      renderWithQueryClient(<Home />);
 
-    const removeButton = screen.getByRole("button", { name: "제거" });
-    fireEvent.click(removeButton);
-
-    expect(screen.getByText("상품 개수: 1")).toBeInTheDocument();
+      await waitFor(() => {
+        const errorMessage = screen.getByText(
+          "서버에서 데이터를 가져오는 데 실패했습니다."
+        );
+        expect(errorMessage).toBeInTheDocument();
+      });
+    });
   });
 });
