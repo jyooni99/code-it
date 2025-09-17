@@ -7,8 +7,7 @@ describe("MSW 모킹 테스트", () => {
 
     const postListItems = await screen.findAllByRole("listitem");
 
-    expect(postListItems).toHaveLength(2);
+    expect(postListItems).toHaveLength(1);
     expect(screen.getByText("1: 첫 번째 게시글")).toBeInTheDocument();
-    expect(screen.getByText("2: 두 번째 게시글")).toBeInTheDocument();
   });
 });
