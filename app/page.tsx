@@ -1,3 +1,5 @@
+// src/app/page.tsx
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -10,25 +12,25 @@ type Post = {
 };
 
 export default function Home() {
-  const [data, setData] = useState<Post[]>([]);
+  const [data, setData] = useState<Post | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get("http://localhost:4000/posts");
+      const response = await axios.get("http://localhost:4000/posts/1");
       setData(response.data);
     };
     fetchData();
   }, []);
   return (
     <ul>
-      {data.map((item) => (
-        <li key={item.id} className="border p-4">
+      {data && (
+        <li key={data.id} className="border p-4">
           <h3 className="font-bold">
-            {item.id}: {item.title}
+            {data.id}: {data.title}
           </h3>
-          <p>{item.body}</p>
+          <p>{data.body}</p>
         </li>
-      ))}
+      )}
     </ul>
   );
 }
