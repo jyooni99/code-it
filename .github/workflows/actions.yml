@@ -1,0 +1,9 @@
+name: Github Actions 연습하기
+on: push
+
+jobs:
+  push-job:
+    runs-on: ubuntu-latest
+    steps:
+      name: github actions 테스트
+      run: echo "github actions 테스트"
