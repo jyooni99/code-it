@@ -1,8 +1,5 @@
 // src/app/page.tsx
 
-"use client";
-
-import { useEffect, useState } from "react";
 import axios from "axios";
 
 type Post = {
@@ -11,16 +8,9 @@ type Post = {
   body: string;
 };
 
-export default function Home() {
-  const [data, setData] = useState<Post | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await axios.get("http://localhost:4000/posts/1");
-      setData(response.data);
-    };
-    fetchData();
-  }, []);
+export default async function Home() {
+  const response = await axios.get<Post>("http://localhost:4000/posts/1");
+  const data = response.data;
   return (
     <ul>
       {data && (
