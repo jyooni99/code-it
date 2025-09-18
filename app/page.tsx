@@ -1,5 +1,7 @@
 // src/app/page.tsx
+"use client";
 
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 type Post = {
@@ -8,9 +10,21 @@ type Post = {
   body: string;
 };
 
-export default async function Home() {
-  const response = await axios.get<Post>("http://localhost:4000/posts/1");
-  const data = response.data;
+export default function Home() {
+  const [data, setData] = useState<Post | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/posts/1");
+        setData(response.data);
+      } catch {
+        setError("데이터를 불러오는데 실패했습니다.");
+      }
+    };
+    fetchData();
+  }, []);
   return (
     <ul>
       {data && (
@@ -21,6 +35,7 @@ export default async function Home() {
           <p>{data.body}</p>
         </li>
       )}
+      {error && <p className="text-red-500">{error}</p>}
     </ul>
   );
 }

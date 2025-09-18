@@ -4,6 +4,7 @@ import "./globals.css";
 
 import QueryProvider from "@/src/providers/QueryProvider";
 import { initMocks } from "@/src/mocks";
+import { MSWComponent } from "@/src/providers/MSWComponent";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +31,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <QueryProvider>{children}</QueryProvider>
+        <MSWComponent>
+          <QueryProvider>{children}</QueryProvider>
+        </MSWComponent>
       </body>
     </html>
   );
