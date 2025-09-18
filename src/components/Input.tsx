@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { DeleteIconButton } from "@/components/DeleteIconButton";
+import { DeleteIconButton } from "./DeleteIconButton";
 
 interface InputProps {
   id?: string;
